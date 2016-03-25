@@ -1,0 +1,47 @@
+源码配置
+源码下载unpv13e.tar.gz
+系统：Ubuntu 14.04.3
+
+$ tar xzvf unpv13e.tar.gz
+$ cd unpv13e
+## 编译库
+$ ./configure      OK
+
+$ cd lib
+$ make                  OK
+
+$ cd ../libfree
+$ make
+报错：inet_ntop.c:61: error: argument ‘size’ doesn’t match prototype
+解决方法：进入该文件，把61行改为socklen_t size;
+
+修改完之后make还是会有 warning。没管了。
+
+$ cd ../intro
+$ make
+报错：nition of ‘struct in_pktinfo’的如下：
+
+解决方法：构in_pktinfo已经包含在标准头文件bits/in.h中了, 它又通过 netinet/in.h 在unp.h中被包括进来. 只要将 unp.h 中的结构定义comment out注释掉就行了.
+
+注释掉之后重新make
+## 运行测试
+
+$ sudo ./daytimetcpsrv     //后台运行服务器，需要sudo
+$ ./daytimetcpcli 127.0.0.1       //运行客户端，如下有日期输出即表示编译和测试成功了
+
+## 配下环境，以便测试自已写的程序
+
+$ cd ..    //回到unpv13e目录下
+
+$ cp libunp.a  /usr/lib
+$ cp libunp.a  /usr/lib64
+
+$ vim ./lib/unp.h  //把刚拷贝过来的unp.h文件中的#include"../config.h" 改为 #include"config.h"
+$ cp ./lib/unp.h config.h  /usr/include
+
+此后，在自已编写的代码中可以直接include<unp.h>，编译时加上选项 -lunp 就可以链接libunp.a了。（没有自己编代码测试）
+参考资料：
+1. [http://www.xuebuyuan.com/2005062.html](http://www.xuebuyuan.com/2005062.html)
+2. [http://www.cnblogs.com/shenlian/archive/2011/08/19/2146190.html](http://www.xuebuyuan.com/2005062.html)
+如果书写的程序出现err_sys()等err函数找不到的情况 这是因为steven大神对错误处理进行了封装 可以搜索apueerror.h这个文件（有兴趣的同学可以研究下封装代码 篇幅小不难的） 然后放入unp目录 接着在程序中 #include "apueerror.h"即可，应该可以把这个文件放到系统目录下，和unp.h类似？）
+
