@@ -41,7 +41,11 @@ $ cp ./lib/unp.h config.h  /usr/include
 
 此后，在自已编写的代码中可以直接include<unp.h>，编译时加上选项 -lunp 就可以链接libunp.a了。（没有自己编代码测试）
 参考资料：
+
 1. [http://www.xuebuyuan.com/2005062.html](http://www.xuebuyuan.com/2005062.html)
+
 2. [http://www.cnblogs.com/shenlian/archive/2011/08/19/2146190.html](http://www.xuebuyuan.com/2005062.html)
-如果书写的程序出现err_sys()等err函数找不到的情况 这是因为steven大神对错误处理进行了封装 可以搜索apueerror.h这个文件（有兴趣的同学可以研究下封装代码 篇幅小不难的） 然后放入unp目录 接着在程序中 #include "apueerror.h"即可，应该可以把这个文件放到系统目录下，和unp.h类似？）
+
+如果书写的程序出现err_sys()等err函数找不到的情况 这是因为steven大神对错误处理进行了封装 可以搜索apueerror.h这个文件
+然后放入unp目录 接着在程序中 #include "apueerror.h"即可（*应该可以把这个文件放到系统目录下，和unp.h类似？*）
 
